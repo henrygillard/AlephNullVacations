@@ -15,3 +15,6 @@ class Location(models.Model):
 
     def get_absolute_url(self):
         return reverse('location_detail', kwargs={'location_id': self.id})
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'location_id': self.id})

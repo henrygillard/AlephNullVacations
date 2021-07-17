@@ -14,7 +14,8 @@
         <p>Longitude: {{ location.longitude }}</p>        
       </div>
       <div class="card-action">
-       
+      <a href="{% url 'locations_update' location.id %}">Update</a>
+      <a href="{% url 'locations_delete' location.id %}">Delete</a>
       </div>
     </div>
   </div>
