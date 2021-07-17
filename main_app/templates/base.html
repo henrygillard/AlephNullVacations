@@ -18,7 +18,12 @@
           <li><a href="/" class="left brand-logo">&nbsp;&nbsp;N^0&nbsp;&nbsp;</a></li>
         </ul>
         <ul class="right">
+          {% if user.is_authenticated %}
           <li><a href="/about">About</a></li>
+          <li><a href="/locations">View All</a></li>
+          {% else %}
+          <li><a href="{% url 'login' %}">Log In</a></li>
+          {% endif %}
         </ul>
       </div>
     </nav>
