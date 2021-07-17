@@ -10,4 +10,6 @@ class Location(models.Model):
     latitude = models.IntegerField(null=True, blank=True)
     longitude = models.IntegerField(null=True, blank=True)
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
