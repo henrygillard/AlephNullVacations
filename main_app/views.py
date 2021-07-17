@@ -27,3 +27,7 @@ def signup(request):
   form = UserCreationForm()
   context = {'form': form, 'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+def location_detail(request, location_id):
+  location = Location.objects.get(id=location_id)
+  return render(request, 'locations/detail.html', { 'location':location })
