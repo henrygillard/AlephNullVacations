@@ -31,6 +31,8 @@
           <tr>
               <th>Rating</th>
               <th>Review</th>
+              <th>Edit</th>
+              <th>Delete</th>
           </tr>
       </thead>
       <tbody>
@@ -38,6 +40,17 @@
           <tr>
               <td>{{review.rating}}</td>
               <td>{{review.content}}</td>
+              <td>
+                <form action="{% url 'update_review' review.id %}" method="POST">
+                  {% csrf_token %}
+                  <input type="submit" class="btn" value="Edit">
+              </td>
+              <td>
+                <form action="{% url 'delete_review' review.id %}" method="POST">
+                  {% csrf_token %}
+                  <input type="submit" class="btn" value="X">
+                </form>
+              </td>
           </tr>
           {% endfor %}
       </tbody>

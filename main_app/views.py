@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Location
+from .models import Location, Review
 from .forms import ReviewForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 
 
 def signup(request):
@@ -40,16 +41,6 @@ def location_detail(request, location_id):
       'review_form': review_form
        })
 
-def add_review(request, location_id):
-    form = ReviewForm(request.POST)
-    if form.is_valid():
-        new_review = form.save(commit=False)
-        new_review.location_id = location_id
-        new_review.save()
-    return redirect('detail', location_id=location_id)
-
-
-
 class LocationCreate(LoginRequiredMixin, CreateView):
   model = Location
   fields = ['name', 'country', 'city', 'latitude', 'longitude']
@@ -64,3 +55,27 @@ class LocationUpdate(LoginRequiredMixin, UpdateView):
 class LocationDelete(LoginRequiredMixin, DeleteView):
   model = Location
   success_url = '/'
+
+def add_review(request, location_id):
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        new_review = form.save(commit=False)
+        new_review.location_id = location_id
+        new_review.save()
+    return redirect('detail', location_id=location_id)
+
+class ReviewDelete(LoginRequiredMixin, DeleteView):
+  model = Review
+  def get_success_url(self):
+    obj = self.get_object()
+    print(obj)
+    return reverse('detail', kwargs={ 'location_id':obj.location.id })
+
+class ReviewUpdate(LoginRequiredMixin, UpdateView):
+  model = Review
+  fields = ['content', 'rating']
+  def get_success_url(self):
+    obj = self.get_object()
+    print(obj)
+    return reverse('detail', kwargs={ 'location_id':obj.location.id })
+  
