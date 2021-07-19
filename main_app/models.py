@@ -9,7 +9,6 @@ RATINGS = (
     ("3", "3"),
     ("4", "4"),
     ("5", "5"),
-
 )
 
 class Location(models.Model):
@@ -23,9 +22,6 @@ class Location(models.Model):
     
     def __str__(self):
         return self.name
-
-    def get_absolute_url(self):
-        return reverse('location_detail', kwargs={'location_id': self.id})
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'location_id': self.id})
