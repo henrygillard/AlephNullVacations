@@ -64,13 +64,6 @@ def add_review(request, location_id):
         new_review.save()
     return redirect('detail', location_id=location_id)
 
-class ReviewDelete(LoginRequiredMixin, DeleteView):
-  model = Review
-  def get_success_url(self):
-    obj = self.get_object()
-    print(obj)
-    return reverse('detail', kwargs={ 'location_id':obj.location.id })
-
 class ReviewUpdate(LoginRequiredMixin, UpdateView):
   model = Review
   fields = ['content', 'rating']
@@ -78,4 +71,12 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
     obj = self.get_object()
     print(obj)
     return reverse('detail', kwargs={ 'location_id':obj.location.id })
+
+class ReviewDelete(LoginRequiredMixin, DeleteView):
+  model = Review
+  def get_success_url(self):
+    obj = self.get_object()
+    print(obj)
+    return reverse('detail', kwargs={ 'location_id':obj.location.id })
+
   
