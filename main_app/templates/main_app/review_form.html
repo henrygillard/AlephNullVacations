@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form action="" method="post">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <input type="submit" value="Post" class="btn">
+  </form>
+
+<script>
+const selectEl = document.getElementById('id_rating');
+M.FormSelect.init(selectEl);
+</script>
+{% endblock %}
