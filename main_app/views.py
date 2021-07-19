@@ -33,6 +33,7 @@ def location_index(request):
 
 def location_detail(request, location_id):
   location = Location.objects.get(id=location_id)
+  print(location)
   review_form = ReviewForm()
 
   return render(request, 'locations/detail.html', { 
@@ -63,4 +64,4 @@ class LocationUpdate(LoginRequiredMixin, UpdateView):
 
 class LocationDelete(LoginRequiredMixin, DeleteView):
   model = Location
-  success_url = '/'
+  success_url = '/locations/'
