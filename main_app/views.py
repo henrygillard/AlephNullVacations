@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from .models import Location
+from .forms import ReviewForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 def signup(request):
   error_message = ''
@@ -31,7 +33,22 @@ def location_index(request):
 
 def location_detail(request, location_id):
   location = Location.objects.get(id=location_id)
-  return render(request, 'locations/detail.html', { 'location':location })
+  review_form = ReviewForm()
+
+  return render(request, 'locations/detail.html', { 
+      'location':location,
+      'review_form': review_form
+       })
+
+def add_review(request, location_id):
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+        new_review = form.save(commit=False)
+        new_review.location_id = location_id
+        new_review.save()
+    return redirect('detail', location_id=location_id)
+
+
 
 class LocationCreate(LoginRequiredMixin, CreateView):
   model = Location

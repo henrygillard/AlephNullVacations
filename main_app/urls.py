@@ -14,6 +14,6 @@ urlpatterns = [
     path('locations/create/', views.LocationCreate.as_view(), name='locations_create'),
     path('locations/<int:pk>/update/', views.LocationUpdate.as_view(), name='locations_update'),
     path('locations/<int:pk>/delete/', views.LocationDelete.as_view(), name='locations_delete'),
-    
+    path('locations/<int:location_id>/add_review/', views.add_review, name='add_review'),
 
 ]
