@@ -56,16 +56,19 @@ def location_detail(request, location_id):
         total = total * 100 / len(location.review_set.all())
         total = round(total)
         total = total / 100
-    if not total:
-        average = f"{total} / 5"
+    if total == 0:
+        average = "No Reviews"
     else:
-        average = f"No Reviews"
+        average = f"{total} / 5"
+
 
     return render(request, 'locations/detail.html', {
         'location': location,
         'review_form': review_form,
         'average': average
     })
+
+
 
 
 class LocationCreate(LoginRequiredMixin, CreateView):
@@ -83,8 +86,11 @@ class LocationUpdate(LoginRequiredMixin, UpdateView):
 
 
 class LocationDelete(LoginRequiredMixin, DeleteView):
-    model = Location
-    success_url = '/'
+  model = Location
+  success_url = '/locations/'
+  success_url = '/'
+  model = Location
+  success_url = '/'
 
 
 def add_review(request, location_id):
@@ -107,6 +113,12 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
 
 
 class ReviewDelete(LoginRequiredMixin, DeleteView):
+  model = Review
+  def get_success_url(self):
+    obj = self.get_object()
+    print(obj)
+    return reverse('detail', kwargs={ 'location_id':obj.location.id })
+  
     model = Review
 
     def get_success_url(self):
