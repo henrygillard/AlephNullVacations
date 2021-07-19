@@ -11,7 +11,7 @@
         <p>Country: {{ location.country }}</p>
         <p>City: {{ location.city }}</p>
         <p>Latitude: {{ location.latitude }}</p>
-        <p>Longitude: {{ location.longitude }}</p>        
+        <p>Longitude: {{ location.longitude }}</p>    
       </div>
       <div class="card-action">
       <a href="{% url 'locations_update' location.id %}">Update</a>
@@ -44,6 +44,7 @@
                 <form action="{% url 'update_review' review.id %}" method="POST">
                   {% csrf_token %}
                   <input type="submit" class="btn" value="Edit">
+                </form>
               </td>
               <td>
                 <form action="{% url 'delete_review' review.id %}" method="POST">
