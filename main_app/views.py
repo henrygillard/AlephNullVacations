@@ -38,9 +38,31 @@ def location_index(request):
 
 
 def location_detail(request, location_id):
-  location = Location.objects.get(id=location_id)
-  print(location)
-  review_form = ReviewForm()
+    location = Location.objects.get(id=location_id)
+    review_form = ReviewForm()
+    total = 0
+    if len(location.review_set.all()):
+      for review in location.review_set.all():
+        if review.rating == "1":
+          total += 1
+        elif review.rating == "2":
+          total += 2
+        elif review.rating == "3":
+          total += 3
+        elif review.rating == "4":
+          total += 4
+        elif review.rating == "5":
+          total += 5
+    average = total * 100 / len(location.review_set.all())
+    average = round(average)
+    average = average / 100
+    return render(request, 'locations/detail.html', {
+        'location': location,
+        'review_form': review_form,
+        'average': average
+    })
+
+
 
 
 class LocationCreate(LoginRequiredMixin, CreateView):
