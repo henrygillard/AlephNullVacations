@@ -1,12 +1,15 @@
 from django.db.models.aggregates import Avg
 from django.shortcuts import render, redirect
-from .models import Location, Review
+from .models import Location, Review, Photo
 from .forms import ReviewForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+import uuid
+import boto3
+import os
 
 
 def signup(request):
@@ -117,9 +120,19 @@ class ReviewDelete(LoginRequiredMixin, DeleteView):
     print(obj)
     return reverse('detail', kwargs={ 'location_id':obj.location.id })
   
-    model = Review
 
-    def get_success_url(self):
-        obj = self.get_object()
-        print(obj)
-        return reverse('detail', kwargs={'location_id': obj.location.id})
+def add_photo(request, location_id):
+  photo_file = request.FILES.get('photo-file', None)
+  if photo_file:
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+    try:
+      bucket = os.environ['S3_BUCKET']
+      s3.upload_fileobj(photo_file, bucket, key)
+      url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
+      Photo.objects.create(url=url, location_id=location_id)
+    except:
+      print('An error occurred uploading file to S3')
+  return redirect('detail', location_id=location_id)
+
+

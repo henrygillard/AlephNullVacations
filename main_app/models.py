@@ -41,3 +41,9 @@ class Review(models.Model):
 
     def get_absolute_url(self):
         return reverse('detail', kwargs={'review_id': self.id})
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"Photo for location_id: {self.location_id} @{self.url}"
