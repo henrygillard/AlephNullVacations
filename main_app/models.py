@@ -11,6 +11,12 @@ RATINGS = (
     ("5", "5"),
 )
 
+REACTION = (
+    ("N", "N"),
+    ("L", "L"),
+    ("D", "D")
+)
+
 class Location(models.Model):
     name = models.CharField(max_length=60)
     country = models.CharField(max_length=60)
@@ -47,3 +53,21 @@ class Photo(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     def __str__(self):
         return f"Photo for location_id: {self.location_id} @{self.url}"
+
+class Reaction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    icon = models.CharField(
+        "reaction",
+        max_length=1,
+        choices=REACTION,
+        default=REACTION[0][0]
+    )
+    
+    def __str__(self):
+        if self.icon == "L":
+            return f"{self.user} liked this"
+        elif self.icon == "D":
+            return f"{self.user} disliked this"
+
+        return f"{self.user} reacted to {self.review}"
