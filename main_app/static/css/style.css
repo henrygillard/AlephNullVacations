@@ -1,0 +1,70 @@
+
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    
+    
+    
+}
+
+nav .brand-logo {
+    position: absolute;
+    color: #fff;
+    display: inline-block;
+    font-size: 2.4rem;
+    padding: 0;
+    width: 2em;
+    background-image: url(https://i.imgur.com/AeZc014.png);
+    background-size: cover;
+    margin-left: 5px;
+}
+
+
+h1 {
+    font-size: 4.2rem;
+    line-height: 110%;
+    margin: 2.8rem 0 1.68rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+
+div.nav-wrapper, footer.page-footer {
+    background-color: #261934;
+}
+
+ul.right > li:hover {
+    background-color: #DA2D7C;
+}
+main {
+    flex: 1 0 auto;
+}
+  
+footer.page-footer {
+    padding-top: 0;
+    text-align: right;
+}
+
+.btn , .btn-large, .btn-small {
+    text-decoration: none;
+    color: #fff;
+    background-color: #3B2881;
+    text-align: center;
+    letter-spacing: .5px;
+    -webkit-transition: background-color .2s cubic-bezier(0.4, 0, 1, 1);
+    transition: background-color .2s ease-out;
+    cursor: pointer;
+}
+
+.btn:hover, .btn-large:hover, .btn-small:hover {
+    background-color: #DA2D7C;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 90%;
+    background-color: #99aaad1c;
+}
