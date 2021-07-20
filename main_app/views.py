@@ -73,16 +73,19 @@ def location_detail(request, location_id):
     average = find_average_score(location)
 
     reactions_count = Reaction.objects.filter(review__location_id=location_id)
-    reactions_count = reactions_count.values('icon').annotate(total=Count('icon')).order_by('total')
-
+    reactions_count = reactions_count.values('review', 'icon').annotate(total=Count('icon')).order_by('total')
+    count_by_review = {}
+    for count in reactions_count:
+        if not count['review'] in count_by_review:
+            count_by_review[count['review']] = {}
+        count_by_review[count['review']][count['icon']] = count['total']
+    print(count_by_review)
 
     return render(request, 'locations/detail.html', {
         'location': location,
         'review_form': review_form,
         'average': average,
-        'dislike_count': len(reactions_count) > 0 and reactions_count[0]['total'],
-        'like_count': len(reactions_count) > 1 and reactions_count[1]['total'],
-        'neutral_count': len(reactions_count) > 2 and reactions_count[2]['total'],
+        'count_by_review': count_by_review
     })
 
 #LOCATION operations
