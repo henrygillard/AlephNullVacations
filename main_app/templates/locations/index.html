@@ -2,13 +2,29 @@
 {% block content %}
 
 <h1>All Locations</h1>
-{% for location in locations %}
-    <div class="card">
-        <div class="card-content">
-          <span class="card-title"><a href="{% url 'detail' location.id %}">{{ location.name }}</a></span>
+<table class="highlight">
+  <thead>
+    <tr>
+      <th>Location Name</th>
+      <th>Country</th>
+      <th>Average Rating</th>
+      <th>Reviews</th>
+    </tr>
+  </thead>
+  <tbody>
+        {% for location in locations %}
+        <tr>
+          <td> <a href="{% url 'detail' location.id %}">{{ location.name }}</a></td>
+          <td>{{location.country}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+        
+         
           
-    </div>
-  </a>
-{% endfor %}
+
 
 {% endblock %}
