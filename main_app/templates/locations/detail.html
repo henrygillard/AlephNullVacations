@@ -48,6 +48,7 @@
                 <th>Review</th>
                 <th>Edit</th>
                 <th>Delete</th>
+                <th>Reactions</th>
             </tr>
         </thead>
         <tbody>
@@ -66,6 +67,12 @@
                         {% csrf_token %}
                         <input type="submit" class="btn" value="X">
                     </form>
+                </td>
+                
+                <td>
+                    {% for reaction in review.reaction_set.all %}
+                    <p>{{ reaction }}</p>
+                    {% endfor %}
                 </td>
             </tr>
             {% endfor %}

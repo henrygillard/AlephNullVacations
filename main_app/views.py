@@ -1,6 +1,6 @@
 from django.db.models.aggregates import Avg
 from django.shortcuts import render, redirect
-from .models import Location, Review, Photo
+from .models import Location, Reaction, Review, Photo
 from .forms import ReviewForm
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -10,7 +10,30 @@ from django.urls import reverse
 import uuid
 import boto3
 import os
-
+# HELPER FUNCTIONS
+def find_average(location):
+  average = ""
+  total = 0
+  if len(location.review_set.all()):
+    for review in location.review_set.all():
+        if review.rating == "1":
+            total += 1
+        elif review.rating == "2":
+            total += 2
+        elif review.rating == "3":
+            total += 3
+        elif review.rating == "4":
+            total += 4
+        elif review.rating == "5":
+            total += 5
+    total = total * 100 / len(location.review_set.all())
+    total = round(total)
+    total = total / 100
+    if total == 0:
+      average = "No Reviews"
+    else:
+      average = f"{total} / 5"
+  return average
 
 def signup(request):
     error_message = ''
@@ -25,6 +48,7 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+  
 
 
 def home(request):
@@ -43,30 +67,14 @@ def location_index(request):
 def location_detail(request, location_id):
     location = Location.objects.get(id=location_id)
     review_form = ReviewForm()
-    total = 0
-    if len(location.review_set.all()):
-        for review in location.review_set.all():
-            if review.rating == "1":
-                total += 1
-            elif review.rating == "2":
-                total += 2
-            elif review.rating == "3":
-                total += 3
-            elif review.rating == "4":
-                total += 4
-            elif review.rating == "5":
-                total += 5
-        total = total * 100 / len(location.review_set.all())
-        total = round(total)
-        total = total / 100
-    if total == 0:
-        average = "No Reviews"
-    else:
-        average = f"{total} / 5"
+    reaction = Reaction.objects.all()
+    average = find_average(location)
+    
     return render(request, 'locations/detail.html', {
         'location': location,
         'review_form': review_form,
-        'average': average
+        'average': average,
+        'reaction': reaction
     })
 
 
