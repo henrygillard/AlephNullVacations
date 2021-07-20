@@ -70,11 +70,8 @@ class LocationUpdate(LoginRequiredMixin, UpdateView):
     fields = ['name', 'country', 'city', 'latitude', 'longitude']
 
 class LocationDelete(LoginRequiredMixin, DeleteView):
-  model = Location
-  success_url = '/locations/'
-  success_url = '/'
-  model = Location
-  success_url = '/'
+    model = Location
+    success_url = '/locations/'
 
 #REVIEW operations
 def add_review(request, location_id):
@@ -117,7 +114,27 @@ def add_photo(request, location_id):
   return redirect('detail', location_id=location_id)
 
 #REVIEW operations
-def add_reaction(request, location_id, review_id):
-    print('add_review')
-    return
+def add_like(request, review_id):
+    obj1 = Reaction.objects.filter(user=request.user, review_id=review_id, icon='D').first()
+    if obj1:
+        obj1.delete()
+
+    review = Review.objects.get(id=review_id)
+    obj2, created2 = Reaction.objects.get_or_create(user=request.user, review_id=review_id, icon='L')
+    if not created2:
+        obj2.delete()
+
+    return redirect('detail', location_id=review.location.id)
+   
+def add_dislike(request, review_id):
+    obj1 = Reaction.objects.filter(user=request.user, review_id=review_id, icon='L').first()
+    if obj1:
+        obj1.delete()
+
+    review = Review.objects.get(id=review_id)
+    obj2, created2 = Reaction.objects.get_or_create(user=request.user, review_id=review_id, icon='D')
+    if not created2:
+        obj2.delete()
+
+    return redirect('detail', location_id=review.location.id)
    

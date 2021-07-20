@@ -21,7 +21,8 @@ urlpatterns = [
     #CRUD PHOTOS
     path('locations/<int:location_id>/add_photo/', views.add_photo, name='add_photo'),
     #CRUD REVIEWS
-    path('reviews/<int:review_id>/add_reaction/', views.add_reaction, name="add_reaction"),
+    path('reviews/<int:review_id>/add_like/', views.add_like, name="add_like"),
+    path('reviews/<int:review_id>/add_dislike/', views.add_dislike, name="add_dislike"),
 
     
 
