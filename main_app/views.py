@@ -7,39 +7,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
-from django.db.models import Count
+from django.db.models import Count, Avg
 import uuid
 import boto3
 import os
-
-# HELPER FUNCTIONS
-def find_average_score(location):
-  average = ""
-  total = 0
-  if len(location.review_set.all()):
-    for review in location.review_set.all():
-        if review.rating == "1":
-            total += 1
-        elif review.rating == "2":
-            total += 2
-        elif review.rating == "3":
-            total += 3
-        elif review.rating == "4":
-            total += 4
-        elif review.rating == "5":
-            total += 5
-    total = total * 100 / len(location.review_set.all())
-    total = round(total)
-    total = total / 100
-    if total == 0:
-      average = "No Reviews"
-    else:
-      average = f"{total} / 5"
-  return average
-
-def find_total_reacts():
-    total=0
-
 
 
 #NAVIGATION operations
@@ -70,8 +41,7 @@ def location_index(request):
 def location_detail(request, location_id):
     location = Location.objects.get(id=location_id)
     review_form = ReviewForm()
-    average = find_average_score(location)
-
+    average = Review.objects.filter(location_id = location_id).aggregate(Avg('rating'))
     reactions_count = Reaction.objects.filter(review__location_id=location_id)
     reactions_count = reactions_count.values('review', 'icon').annotate(total=Count('icon')).order_by('total')
     count_by_review = {}
@@ -79,12 +49,11 @@ def location_detail(request, location_id):
         if not count['review'] in count_by_review:
             count_by_review[count['review']] = {}
         count_by_review[count['review']][count['icon']] = count['total']
-    print(count_by_review)
 
     return render(request, 'locations/detail.html', {
         'location': location,
         'review_form': review_form,
-        'average': average,
+        'average': average['rating__avg'],
         'count_by_review': count_by_review
     })
 

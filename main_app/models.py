@@ -4,11 +4,11 @@ from django.urls import reverse
 # Create your models here.
 
 RATINGS = (
-    ("1", "1"),
-    ("2", "2"),
-    ("3", "3"),
-    ("4", "4"),
-    ("5", "5"),
+    (1, "1"),
+    (2, "2"),
+    (3, "3"),
+    (4, "4"),
+    (5, "5"),
 )
 
 REACTION = (
@@ -35,9 +35,8 @@ class Location(models.Model):
 
 class Review(models.Model):
     content = models.CharField(max_length=500)
-    rating = models.CharField(
+    rating = models.IntegerField(
         "rating",
-        max_length=1,
         choices=RATINGS,
         default=RATINGS[0][0]
     )
