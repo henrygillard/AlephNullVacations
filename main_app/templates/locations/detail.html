@@ -71,7 +71,8 @@
                 </td>
 
                 <td>
-                    Likes: {{ count_by_review|dict_key:[review.id, 'L'] }} <br>
+                    Likes: {% reaction_count count_by_review review.id 'L' %} <br>
+                    Dislikes: {% reaction_count count_by_review review.id 'D' %} <br>
                 </td>
             </tr>
             {% endfor %}
