@@ -12,9 +12,9 @@ RATINGS = (
 )
 
 REACTION = (
-    ("N", "N"),
-    ("L", "L"),
-    ("D", "D")
+    ("N", "Neutral"),
+    ("L", "Like"),
+    ("D", "Dislike")
 )
 
 class Location(models.Model):

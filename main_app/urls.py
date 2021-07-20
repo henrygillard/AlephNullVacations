@@ -20,6 +20,9 @@ urlpatterns = [
     path('locations/<int:pk>/update_review/', views.ReviewUpdate.as_view(), name='update_review'),
     #CRUD PHOTOS
     path('locations/<int:location_id>/add_photo/', views.add_photo, name='add_photo'),
+    #CRUD REVIEWS
+    path('reviews/<int:review_id>/add_reaction/', views.add_reaction, name="add_reaction"),
+
     
 
 ]

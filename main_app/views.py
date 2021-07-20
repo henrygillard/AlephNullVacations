@@ -7,11 +7,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.db.models import Count
 import uuid
 import boto3
 import os
+
 # HELPER FUNCTIONS
-def find_average(location):
+def find_average_score(location):
   average = ""
   total = 0
   if len(location.review_set.all()):
@@ -34,6 +36,13 @@ def find_average(location):
     else:
       average = f"{total} / 5"
   return average
+
+def find_total_reacts():
+    total=0
+
+
+
+#NAVIGATION operations
 def signup(request):
     error_message = ''
     if request.method == 'POST':
@@ -47,39 +56,55 @@ def signup(request):
     form = UserCreationForm()
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
+
 def home(request):
     return render(request, 'home.html')
+
 def about(request):
     return render(request, 'about.html')
+
 def location_index(request):
     locations = Location.objects.all()
     return render(request, 'locations/index.html', {'locations': locations})
+
 def location_detail(request, location_id):
     location = Location.objects.get(id=location_id)
     review_form = ReviewForm()
-    reaction = Reaction.objects.all()
-    average = find_average(location)
+    average = find_average_score(location)
+
+    reactions_count = Reaction.objects.filter(review__location_id=location_id)
+    reactions_count = reactions_count.values('icon').annotate(total=Count('icon')).order_by('total')
+
+
     return render(request, 'locations/detail.html', {
         'location': location,
         'review_form': review_form,
         'average': average,
-        'reaction': reaction
+        'dislike_count': len(reactions_count) > 0 and reactions_count[0]['total'],
+        'like_count': len(reactions_count) > 1 and reactions_count[1]['total'],
+        'neutral_count': len(reactions_count) > 2 and reactions_count[2]['total'],
     })
+
+#LOCATION operations
 class LocationCreate(LoginRequiredMixin, CreateView):
     model = Location
     fields = ['name', 'country', 'city', 'latitude', 'longitude']
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
 class LocationUpdate(LoginRequiredMixin, UpdateView):
     model = Location
     fields = ['name', 'country', 'city', 'latitude', 'longitude']
+
 class LocationDelete(LoginRequiredMixin, DeleteView):
   model = Location
   success_url = '/locations/'
   success_url = '/'
   model = Location
   success_url = '/'
+
+#REVIEW operations
 def add_review(request, location_id):
     form = ReviewForm(request.POST)
     if form.is_valid():
@@ -87,6 +112,7 @@ def add_review(request, location_id):
         new_review.location_id = location_id
         new_review.save()
     return redirect('detail', location_id=location_id)
+
 class ReviewUpdate(LoginRequiredMixin, UpdateView):
     model = Review
     fields = ['content', 'rating']
@@ -94,12 +120,16 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
         obj = self.get_object()
         print(obj)
         return reverse('detail', kwargs={'location_id': obj.location.id})
+
 class ReviewDelete(LoginRequiredMixin, DeleteView):
   model = Review
   def get_success_url(self):
     obj = self.get_object()
     print(obj)
     return reverse('detail', kwargs={ 'location_id':obj.location.id })
+
+
+#PHOTO operations
 def add_photo(request, location_id):
   photo_file = request.FILES.get('photo-file', None)
   if photo_file:
@@ -113,3 +143,9 @@ def add_photo(request, location_id):
     except:
       print('An error occurred uploading file to S3')
   return redirect('detail', location_id=location_id)
+
+#REVIEW operations
+def add_reaction(request, location_id, review_id):
+    print('add_review')
+    return
+   
