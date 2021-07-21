@@ -1,11 +1,14 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Otomanopee+One&display=swap');
 
 body {
+    font-family: 'PT Sans', sans-serif;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
     background: linear-gradient(181deg, #3b2881, #78589d);
     color: white;
+    background-image: url(https://i.imgur.com/03JJBGO.png);
+    background-size: cover;
 }
 
 #about-banner {
@@ -37,7 +40,15 @@ nav .brand-logo {
     background-size: cover;
     margin-left: 5px;
 }
+#dislike {
+    background-image: url(https://i.imgur.com/9m7jwQN.png);
+    background-size: contain;
+}
 
+#like {
+    background-image: url(https://i.imgur.com/xK9N1Oh.png);
+    background-size: contain;
+}
 
 h1 {
     font-size: 4.2rem;
@@ -60,6 +71,16 @@ div.nav-wrapper, footer.page-footer {
 
 #about-banner {
     width: 50rem;
+}
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
+    color: #860edd;
+}
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+    color: #d050cb;
+    margin-right: 24px;
+    -webkit-transition: color .3s ease;
+    transition: color .3s ease;
+    text-transform: uppercase;
 }
 
 ul.right > li:hover {
