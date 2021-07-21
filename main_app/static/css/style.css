@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Otomanopee+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Otomanopee+One&family=PT+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@500&family=EB+Garamond&family=Monoton&family=Otomanopee+One&family=PT+Sans&display=swap');
 
 body {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Dosis', sans-serif;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -13,6 +14,11 @@ body {
 
 #about-banner {
     display: flex;
+}
+
+#submit-photo {
+    display: flex;
+    
 }
 a {
     text-decoration: none;
@@ -51,12 +57,17 @@ nav .brand-logo {
 }
 
 h1 {
+    text-align: center;
     font-size: 4.2rem;
     line-height: 110%;
     margin: 2.8rem 0 1.68rem 0;
     display: flex;
     justify-content: center;
     text-shadow: -1px 12px 8px #040404;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Monoton', sans-serif;
 }
 div.nav-wrapper, footer.page-footer {
     background-color: #261934;
@@ -67,6 +78,26 @@ div.nav-wrapper, footer.page-footer {
     padding: 24px;
     border-radius: 0 0 2px 2px;
     color: black;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-panel {
+    -webkit-transition: -webkit-box-shadow .25s;
+    transition: -webkit-box-shadow .25s;
+    transition: box-shadow .25s;
+    transition: box-shadow .25s, -webkit-box-shadow .25s;
+    padding: 24px;
+    margin: .5rem 0 1rem 0;
+    border-radius: 2px;
+    background-color: #fefbfb99;
+}
+
+.post-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: inherit;
 }
 
 #about-banner {
