@@ -2,7 +2,25 @@
 {% block content %}
 <h1>Home</h1>
 
-<p>Honey, I'm going on Vacation</p>
+<p>{{ user.username }} Comments:</p>
+<table class="highlight">
+    <thead>
+      <tr>
+        <th>Location:</th>
+        <th>Rating:</th>
+        <th>Content:</th>
+      </tr>
+    </thead>
+    <tbody>
+          {% for review in user.review_set.all %}
+          <tr>
+            <td>{{ review.location }}</td>
+            <td>{{ review.rating }}</td>
+            <td>{{ review.content }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
 {% endblock %}
 
