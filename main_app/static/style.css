@@ -4,10 +4,27 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
-    
-    
-    
+    background: linear-gradient(181deg, #3b2881, #78589d);
+    color: white;
 }
+
+#about-banner {
+    display: ;
+}
+a {
+    text-decoration: none;
+    color: #ed94bd;
+    font-size: x-large;
+    font-weight: 600;
+}
+    
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+  }
 
 nav .brand-logo {
     position: absolute;
@@ -28,11 +45,21 @@ h1 {
     margin: 2.8rem 0 1.68rem 0;
     display: flex;
     justify-content: center;
+    text-shadow: -1px 12px 8px #040404;
 }
-
-
 div.nav-wrapper, footer.page-footer {
     background-color: #261934;
+    background-image: url(https://i.imgur.com/O2OoU5x.png);
+}
+
+.card .card-content {
+    padding: 24px;
+    border-radius: 0 0 2px 2px;
+    color: black;
+}
+
+#about-banner {
+    width: 50rem;
 }
 
 ul.right > li:hover {
@@ -66,5 +93,5 @@ footer.page-footer {
     margin: 0 auto;
     max-width: 1280px;
     width: 90%;
-    background-color: #99aaad1c;
+    background-color: #99aaad24;
 }
