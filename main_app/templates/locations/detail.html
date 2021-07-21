@@ -76,14 +76,14 @@
                     Likes: {% reaction_count count_by_review review.id 'L' %} <br>
                     <form action="{% url 'add_like' review.id %}" method="POST">
                         {% csrf_token %}
-                        <input type="submit" class="btn" value="Like">
+                        <input type="submit" class="btn" value="Like" style="background-color: rgb(20, 24, 148);">
                     </form>
                 </td>
                 <td>
                     Dislikes: {% reaction_count count_by_review review.id 'D' %} <br>
                     <form action="{% url 'add_dislike' review.id %}" method="POST">
                         {% csrf_token %}
-                        <input type="submit" class="btn" value="Dislike">
+                        <input type="submit" class="btn" value="Dislike" style="background-color: red;">
                     </form>
                 </td>
             </tr>
