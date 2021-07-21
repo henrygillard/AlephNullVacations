@@ -17,8 +17,8 @@
         <tr>
           <td> <a href="{% url 'detail' location.id %}">{{ location.name }}</a></td>
           <td>{{location.country}}</td>
-          <td></td>
-          <td></td>
+          <td>{{location.average.rating__avg}}</td>
+          <td>{{location.review_set.all|length}}</td>
         </tr>
         {% endfor %}
       </tbody>

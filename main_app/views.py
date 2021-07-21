@@ -37,7 +37,7 @@ def about(request):
 def location_index(request):
     locations = Location.objects.all()
     for location in locations:
-      print(location)
+      location.average = Review.objects.filter(location_id = location.id).aggregate(Avg('rating'))
     return render(request, 'locations/index.html', {
         'locations': locations
     })
@@ -83,6 +83,7 @@ def add_review(request, location_id):
     if form.is_valid():
         new_review = form.save(commit=False)
         new_review.location_id = location_id
+        new_review.user = request.user
         new_review.save()
     return redirect('detail', location_id=location_id)
 
@@ -112,7 +113,7 @@ def add_photo(request, location_id):
       bucket = os.environ['S3_BUCKET']
       s3.upload_fileobj(photo_file, bucket, key)
       url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
-      Photo.objects.create(url=url, location_id=location_id)
+      Photo.objects.create(url=url, location_id=location_id, user=request.user)
     except:
       print('An error occurred uploading file to S3')
   return redirect('detail', location_id=location_id)

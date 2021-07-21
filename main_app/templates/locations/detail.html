@@ -57,6 +57,7 @@
     <table class="striped">
         <thead>
             <tr>
+                <th>User</th>
                 <th>Rating</th>
                 <th>Review</th>
                 <th>Edit</th>
@@ -68,6 +69,7 @@
             <hr>
             {% for review in location.review_set.all %}
             <tr>
+                <td>{{ review.user }}</td>
                 <td>{{review.rating}}</td>
                 <td>{{review.content}}</td>
                 <td>

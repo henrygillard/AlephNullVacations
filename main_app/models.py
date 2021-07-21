@@ -41,6 +41,7 @@ class Review(models.Model):
         default=RATINGS[0][0]
     )
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.content}"
 
@@ -49,6 +50,7 @@ class Review(models.Model):
 
 class Photo(models.Model):
     url = models.CharField(max_length=200)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     def __str__(self):
         return f"Photo for location_id: {self.location_id} @{self.url}"
