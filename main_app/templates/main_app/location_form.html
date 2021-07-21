@@ -2,12 +2,17 @@
 
 {% block content %}
 <h1>Add Location</h1>
-  <form action="" method="post" style="margin: 5%;">
+  <form action="" method="post" style="margin: 5%">
     {% csrf_token %}
-    <table>
+    <table style="background-color: #bb73f638;">
       {{ form.as_table }}
     </table>
-    <input type="submit" value="Post" class="btn">
+    <div class="post-btn" style="display: flex;
+    justify-content: center;
+    margin-top: inherit;">
+      <input type="submit" value="Post" class="btn" style="background-color: #DA2D7C; font-size: 2rem;">
+    </div>
+
   </form>
 
 {% endblock %}
