@@ -38,7 +38,9 @@ def location_index(request):
     locations = Location.objects.all()
     for location in locations:
       print(location)
-    return render(request, 'locations/index.html', {'locations': locations})
+    return render(request, 'locations/index.html', {
+        'locations': locations
+    })
 
 def location_detail(request, location_id):
     location = Location.objects.get(id=location_id)
