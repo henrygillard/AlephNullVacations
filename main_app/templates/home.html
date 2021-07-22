@@ -1,27 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Home</h1>
 
-<p>{{ user.username }} Comments:</p>
-<table class="highlight">
-    <thead>
-      <tr>
-        <th>Location:</th>
-        <th>Rating:</th>
-        <th>Content:</th>
-      </tr>
-    </thead>
-    <tbody>
-          {% for review in user.review_set.all %}
-          <tr>
-            <td>{{ review.location }}</td>
-            <td>{{ review.rating }}</td>
-            <td>{{ review.content }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+<h1 style="margin-bottom: 25px;">Welcome!</h1>
+<div  style="margin-bottom: 10rem;">
+    <p style="font-size:x-large;">Welcome to Aleph Null Vacations! The one stop app for you to plan/share your next big vacation destination!</p>
+    <br>
+    <p style="font-size:x-large; text-align: center;">Please <a href="/accounts/login">Login</a> to get started!</p>
+</div>
+{% if request.user %}
+    <h5 style="text-align: center; ">{{ user.username }} Your Comments:</h5>
+    <hr>
+    <table class="highlight">
+        <thead>
+        <tr>
+            <th>Location:</th>
+            <th>Rating:</th>
+            <th>Content:</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for review in user.review_set.all %}
+            <tr>
+                <td>{{ review.location }}</td>
+                <td>{{ review.rating }}</td>
+                <td>{{ review.content }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    
+{% endif %}
 
 {% endblock %}
 
-https://streamable.com/e/edaazw
