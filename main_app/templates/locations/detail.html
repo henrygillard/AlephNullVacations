@@ -95,7 +95,7 @@
                             <input type="submit" class="btn" value="" id="like">
                         </form>
                     </div>
-                    <div>Likes: {% reaction_count count_by_review review.id 'L' %} <br></div>
+                    <div><a href="{% url 'reaction_index' review.id %}">Likes: {% reaction_count count_by_review review.id 'L' %}</a><br></div>
                 </td>
                 <td>
                     <div>
@@ -104,7 +104,7 @@
                             <input type="submit" class="btn" value="" id="dislike" >
                         </form>
                     </div>
-                    <div>Dislikes: {% reaction_count count_by_review review.id 'D' %} <br></div>
+                    <div><a href="{% url 'reaction_index' review.id %}">Dislikes: {% reaction_count count_by_review review.id 'D' %}</a><br></div>
                 </td>
                 
             </tr>

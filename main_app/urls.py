@@ -23,7 +23,6 @@ urlpatterns = [
     #CRUD REVIEWS
     path('reviews/<int:review_id>/add_like/', views.add_like, name="add_like"),
     path('reviews/<int:review_id>/add_dislike/', views.add_dislike, name="add_dislike"),
-
-    
-
+    #CRUD REACTIONS
+    path('reviews/<int:review_id>/reactions/', views.reaction_index, name="reaction_index")
 ]
