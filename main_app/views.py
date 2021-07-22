@@ -175,3 +175,12 @@ def add_dislike(request, review_id):
         obj2.delete()
 
     return redirect('detail', location_id=review.location.id)
+
+def reaction_index(request, review_id):
+    likes = Reaction.objects.filter(review_id = review_id, icon = 'L')
+    dislikes = Reaction.objects.filter(review_id = review_id, icon = 'D')
+    return render(request, 'reaction_index.html', {
+        'likes': likes,
+        'dislikes': dislikes
+    })
+

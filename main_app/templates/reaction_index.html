@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1></h1>
+<hr>
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>Liked Your Post:</th>
+                <th>Disliked Your Post:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <ul>
+                        {% for like in likes %}
+                        <li>{{ like.user }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for dislike in dislikes %}
+                        <li>{{ dislike.user }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
