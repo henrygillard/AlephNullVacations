@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.db.models import Count, Avg
+from django.contrib.auth.decorators import login_required
 import uuid
 import boto3
 import os
@@ -118,12 +119,12 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
 
 
 class ReviewDelete(LoginRequiredMixin, DeleteView):
-    model = Review
+  model = Review
 
-    def get_success_url(self):
-        obj = self.get_object()
-        print(obj)
-        return reverse('detail', kwargs={'location_id': obj.location.id})
+  def get_success_url(self):
+      obj = self.get_object()
+      print(obj)
+      return reverse('detail', kwargs={'location_id': obj.location.id})
 
 
 # PHOTO operations
