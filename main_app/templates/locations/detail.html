@@ -29,8 +29,10 @@
             </div>
             <div class="card-action">
                 {% if request.user == location.user %}
-                <a href="{% url 'locations_update' location.id %}">Update</a>
-                <a href="{% url 'locations_delete' location.id %}">Delete</a>
+                <div id="update-delete">
+                    <a href="{% url 'locations_update' location.id %}">Update</a>
+                    <a href="{% url 'locations_delete' location.id %}">Delete</a>
+                </div>
                 {% endif %}
                 <hr>
                 <form action="{% url 'add_review' location.id %}" method="POST">
@@ -49,7 +51,9 @@
                     <input type="file" name="photo-file">
                 </div>
                 <br><br>
-                <input type="submit" class="btn" value="Upload Photo">
+                <div id="upload-photo">
+                    <input type="submit" class="btn" value="Upload Photo">
+                </div>
             </div>
         </div>
     </form>
@@ -97,7 +101,7 @@
                             <input type="submit" class="btn" value="" id="like">
                         </form>
                     </div>
-                    <div><a href="{% url 'reaction_index' review.id %}">Likes: {% reaction_count count_by_review review.id 'L' %}</a><br></div>
+                    <div><a style="font-size: small; text-decoration: underline;" href="{% url 'reaction_index' review.id %}">Likes: {% reaction_count count_by_review review.id 'L' %}</a><br></div>
                 </td>
                 <td>
                     <div>
@@ -106,7 +110,7 @@
                             <input type="submit" class="btn" value="" id="dislike" >
                         </form>
                     </div>
-                    <div><a href="{% url 'reaction_index' review.id %}">Dislikes: {% reaction_count count_by_review review.id 'D' %}</a><br></div>
+                    <div><a style="font-size: small; text-decoration: underline;" href="{% url 'reaction_index' review.id %}">Dislikes: {% reaction_count count_by_review review.id 'D' %}</a><br></div>
                 </td>
                 
             </tr>

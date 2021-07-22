@@ -14,6 +14,7 @@ body {
 
 #about-banner {
     display: flex;
+    width: 30rem;
 }
 
 #submit-photo {
@@ -144,12 +145,22 @@ footer.page-footer {
 form input {
     color: white;
   }
-  
+
+#update-delete {
+    display: flex;
+    justify-content: center;
+}
+
+
+
+form label {
+    color: white
+}
 .container {
-    margin: 0 auto;
+    margin: 10px auto;
     max-width: 1280px;
     width: 80%;
-    background-color: #99aaad24;
+    background-color: #99aaad00;
 }
 
 .about_h {
