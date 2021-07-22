@@ -112,19 +112,33 @@ class ReviewUpdate(LoginRequiredMixin, UpdateView):
     model = Review
     fields = ['content', 'rating']
 
+    ### VERIFY USER EDITING IS THE USER WHO MADE THE REVIEW
+    def form_valid(self, form):
+        edit_review = form.save(commit=False)
+        print(edit_review.user)
+        if self.request.user.id != edit_review.user.id:
+            return redirect('detail', location_id=edit_review.location.id)
+        return super().form_valid(form)
+
+
     def get_success_url(self):
         obj = self.get_object()
-        print(obj)
         return reverse('detail', kwargs={'location_id': obj.location.id})
 
 
 class ReviewDelete(LoginRequiredMixin, DeleteView):
-  model = Review
+    model = Review
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        if self.object.user.id == request.user.id:
+            self.object.delete()
+        return redirect('detail', location_id=self.object.location.id)
 
-  def get_success_url(self):
-      obj = self.get_object()
-      print(obj)
-      return reverse('detail', kwargs={'location_id': obj.location.id})
+    def get_success_url(self):
+        obj = self.get_object()
+        print(obj)
+        return reverse('detail', kwargs={'location_id': obj.location.id})
 
 
 # PHOTO operations
