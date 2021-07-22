@@ -13,7 +13,7 @@ import boto3
 import os
 
 
-#NAVIGATION operations
+# NAVIGATION operations
 def signup(request):
     error_message = ''
     if request.method == 'POST':
@@ -28,26 +28,33 @@ def signup(request):
     context = {'form': form, 'error_message': error_message}
     return render(request, 'registration/signup.html', context)
 
+
 def home(request):
     return render(request, 'home.html')
+
 
 def about(request):
     return render(request, 'about.html')
 
+
 def location_index(request):
     locations = Location.objects.all()
     for location in locations:
-      location.average = Review.objects.filter(location_id = location.id).aggregate(Avg('rating'))
+        location.average = Review.objects.filter(
+            location_id=location.id).aggregate(Avg('rating'))
     return render(request, 'locations/index.html', {
         'locations': locations
     })
 
+
 def location_detail(request, location_id):
     location = Location.objects.get(id=location_id)
     review_form = ReviewForm()
-    average = Review.objects.filter(location_id = location_id).aggregate(Avg('rating'))
+    average = Review.objects.filter(
+        location_id=location_id).aggregate(Avg('rating'))
     reactions_count = Reaction.objects.filter(review__location_id=location_id)
-    reactions_count = reactions_count.values('review', 'icon').annotate(total=Count('icon')).order_by('total')
+    reactions_count = reactions_count.values('review', 'icon').annotate(
+        total=Count('icon')).order_by('total')
     count_by_review = {}
     for count in reactions_count:
         if not count['review'] in count_by_review:
@@ -61,24 +68,36 @@ def location_detail(request, location_id):
         'count_by_review': count_by_review
     })
 
-#LOCATION operations
+# LOCATION operations
+
+
 class LocationCreate(LoginRequiredMixin, CreateView):
     model = Location
     fields = ['name', 'country', 'city', 'latitude', 'longitude']
+
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
 
 class LocationUpdate(LoginRequiredMixin, UpdateView):
     model = Location
     fields = ['name', 'country', 'city', 'latitude', 'longitude']
 
+
 class LocationDelete(LoginRequiredMixin, DeleteView):
     model = Location
     success_url = '/locations/'
 
-#REVIEW operations
+# REVIEW operations
+
+
 def add_review(request, location_id):
+    review = Review.objects.filter(
+        user=request.user, location_id=location_id).first()
+    if review:
+        return redirect('detail', location_id=location_id)
+
     form = ReviewForm(request.POST)
     if form.is_valid():
         new_review = form.save(commit=False)
@@ -87,59 +106,71 @@ def add_review(request, location_id):
         new_review.save()
     return redirect('detail', location_id=location_id)
 
+
 class ReviewUpdate(LoginRequiredMixin, UpdateView):
     model = Review
     fields = ['content', 'rating']
+
     def get_success_url(self):
         obj = self.get_object()
         print(obj)
         return reverse('detail', kwargs={'location_id': obj.location.id})
 
+
 class ReviewDelete(LoginRequiredMixin, DeleteView):
-  model = Review
-  def get_success_url(self):
-    obj = self.get_object()
-    print(obj)
-    return reverse('detail', kwargs={ 'location_id':obj.location.id })
+    model = Review
+
+    def get_success_url(self):
+        obj = self.get_object()
+        print(obj)
+        return reverse('detail', kwargs={'location_id': obj.location.id})
 
 
-#PHOTO operations
+# PHOTO operations
 def add_photo(request, location_id):
-  photo_file = request.FILES.get('photo-file', None)
-  if photo_file:
-    s3 = boto3.client('s3')
-    key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
-    try:
-      bucket = os.environ['S3_BUCKET']
-      s3.upload_fileobj(photo_file, bucket, key)
-      url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
-      Photo.objects.create(url=url, location_id=location_id, user=request.user)
-    except:
-      print('An error occurred uploading file to S3')
-  return redirect('detail', location_id=location_id)
+    photo_file = request.FILES.get('photo-file', None)
+    if photo_file:
+        s3 = boto3.client('s3')
+        key = uuid.uuid4().hex[:6] + \
+            photo_file.name[photo_file.name.rfind('.'):]
+        try:
+            bucket = os.environ['S3_BUCKET']
+            s3.upload_fileobj(photo_file, bucket, key)
+            url = f"{os.environ['S3_BASE_URL']}{bucket}/{key}"
+            Photo.objects.create(
+                url=url, location_id=location_id, user=request.user)
+        except:
+            print('An error occurred uploading file to S3')
+    return redirect('detail', location_id=location_id)
 
-#REVIEW operations
+# REVIEW operations
+
+
 def add_like(request, review_id):
-    obj1 = Reaction.objects.filter(user=request.user, review_id=review_id, icon='D').first()
+    obj1 = Reaction.objects.filter(
+        user=request.user, review_id=review_id, icon='D').first()
     if obj1:
         obj1.delete()
 
     review = Review.objects.get(id=review_id)
-    obj2, created2 = Reaction.objects.get_or_create(user=request.user, review_id=review_id, icon='L')
+    obj2, created2 = Reaction.objects.get_or_create(
+        user=request.user, review_id=review_id, icon='L')
     if not created2:
         obj2.delete()
 
     return redirect('detail', location_id=review.location.id)
-   
+
+
 def add_dislike(request, review_id):
-    obj1 = Reaction.objects.filter(user=request.user, review_id=review_id, icon='L').first()
+    obj1 = Reaction.objects.filter(
+        user=request.user, review_id=review_id, icon='L').first()
     if obj1:
         obj1.delete()
 
     review = Review.objects.get(id=review_id)
-    obj2, created2 = Reaction.objects.get_or_create(user=request.user, review_id=review_id, icon='D')
+    obj2, created2 = Reaction.objects.get_or_create(
+        user=request.user, review_id=review_id, icon='D')
     if not created2:
         obj2.delete()
 
     return redirect('detail', location_id=review.location.id)
-   
