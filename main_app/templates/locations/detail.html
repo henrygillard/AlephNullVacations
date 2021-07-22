@@ -28,8 +28,10 @@
                     <p>Average: {{ average }}</p>
             </div>
             <div class="card-action">
+                {% if request.user == location.user %}
                 <a href="{% url 'locations_update' location.id %}">Update</a>
                 <a href="{% url 'locations_delete' location.id %}">Delete</a>
+                {% endif %}
                 <hr>
                 <form action="{% url 'add_review' location.id %}" method="POST">
                     {% csrf_token %}
@@ -79,10 +81,12 @@
                     </form>
                 </td>
                 <td>
+                    {% if request.user == review.user %}
                     <form action="{% url 'delete_review' review.id %}" method="POST">
                         {% csrf_token %}
                         <input type="submit" class="btn" value="X">
                     </form>
+                    {% endif %}    
                 </td>
                 <td>
                     <div>
