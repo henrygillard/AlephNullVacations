@@ -92,7 +92,7 @@ class LocationDelete(LoginRequiredMixin, DeleteView):
 
 # REVIEW operations
 
-
+@login_required
 def add_review(request, location_id):
     review = Review.objects.filter(
         user=request.user, location_id=location_id).first()
@@ -128,6 +128,7 @@ class ReviewDelete(LoginRequiredMixin, DeleteView):
 
 
 # PHOTO operations
+@login_required
 def add_photo(request, location_id):
     photo_file = request.FILES.get('photo-file', None)
     if photo_file:
@@ -145,8 +146,7 @@ def add_photo(request, location_id):
     return redirect('detail', location_id=location_id)
 
 # REVIEW operations
-
-
+@login_required
 def add_like(request, review_id):
     obj1 = Reaction.objects.filter(
         user=request.user, review_id=review_id, icon='D').first()
@@ -161,7 +161,7 @@ def add_like(request, review_id):
 
     return redirect('detail', location_id=review.location.id)
 
-
+@login_required
 def add_dislike(request, review_id):
     obj1 = Reaction.objects.filter(
         user=request.user, review_id=review_id, icon='L').first()
