@@ -75,10 +75,12 @@
                 <td>{{review.rating}}</td>
                 <td>{{review.content}}</td>
                 <td>
+                    {% if request.user == review.user %}
                     <form action="{% url 'update_review' review.id %}" method="POST">
                         {% csrf_token %}
                         <input type="submit" class="btn" value="Edit">
                     </form>
+                    {% endif %} 
                 </td>
                 <td>
                     {% if request.user == review.user %}
